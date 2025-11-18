@@ -10,11 +10,11 @@
             background: #111;
             color: white;
             text-align: center;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
         }
 
         #gameCanvas {
-            background: linear-gradient(#444, #222);
+            background: #1e1e1e;
             width: 100%;
             max-width: 800px;
             height: 400px;
@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <h1>Subway Surf - Versão Web</h1>
+    <h1>Subway Surf - Web</h1>
 
     <canvas id="gameCanvas" width="800" height="400"></canvas>
 
@@ -32,39 +32,25 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // CONFIGURAÇÃO DAS 3 PISTAS
-        const lanes = [200, 400, 600]; // esquerda, meio, direita
+        // 3 PISTAS (distâncias horizontais)
+        const lanes = [200, 400, 600];
 
         // PERSONAGEM
         const player = {
-            x: lanes[1],   // Começa no meio
+            x: lanes[1],
             y: 300,
             width: 40,
             height: 40,
-            laneIndex: 1,  // 0 = esquerda, 1 = meio, 2 = direita
+            laneIndex: 1,
             color: "yellow"
         };
 
-        // DESENHAR PERSONAGEM
         function drawPlayer() {
             ctx.fillStyle = player.color;
-            ctx.fillRect(player.x - 20, player.y - 20, player.width, player.height);
+            ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
         }
 
-        // DESENHAR PISTAS (guias para teste)
-        function drawLanes() {
-            ctx.strokeStyle = "#ffffff55";
-            ctx.lineWidth = 4;
-
-            lanes.forEach(x => {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, 400);
-                ctx.stroke();
-            });
-        }
-
-        // MOVIMENTO COM SETAS
+        // CONTROLE ESQUERDA / DIREITA
         document.addEventListener("keydown", (e) => {
             if (e.key === "ArrowLeft" && player.laneIndex > 0) {
                 player.laneIndex--;
@@ -76,13 +62,10 @@
             }
         });
 
-        // LOOP DO JOGO
+        // LOOP PRINCIPAL
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawLanes();
             drawPlayer();
-
             requestAnimationFrame(gameLoop);
         }
 
